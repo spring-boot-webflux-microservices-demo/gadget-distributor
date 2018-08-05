@@ -1,6 +1,6 @@
 package com.vk.demo.gadgetdistributor.handler;
 
-import com.vk.demo.gadgetdistributor.models.GadgetUser;
+import com.vk.demo.gadgetdistributor.models.UserGadget;
 import com.vk.demo.gadgetdistributor.repositories.GadgetDistributorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,8 +22,8 @@ public class GadgetDistributorHandler {
 
     public Mono<ServerResponse> findGadgetsByUser(ServerRequest request) {
         String userId = request.pathVariable("userId");
-        Flux<GadgetUser> gadgets = gadgetDistributorRepository.findAllByUserId(userId);
-        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(gadgets, GadgetUser.class);
+        Flux<UserGadget> gadgets = gadgetDistributorRepository.findAllByUserId(userId);
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(gadgets, UserGadget.class);
     }
 
 }

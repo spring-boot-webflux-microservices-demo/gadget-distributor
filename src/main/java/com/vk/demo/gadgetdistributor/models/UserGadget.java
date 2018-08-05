@@ -4,19 +4,19 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class GadgetUser {
+public class UserGadget {
 
     @Id
     private String id;
-
-    private String gadgetId;
-    private String gadgetType;
-    private String gadgetSpecifications;
 
     private String userId;
     private String userFirstName;
     private String userLastName;
     private Integer userAge;
+
+    private String gadgetId;
+    private String gadgetType;
+    private String gadgetSpecifications;
 
     public String getId() {
         return id;

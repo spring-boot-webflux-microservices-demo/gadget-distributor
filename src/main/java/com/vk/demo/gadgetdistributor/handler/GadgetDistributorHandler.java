@@ -10,6 +10,8 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.constraints.NotNull;
+
 @Component
 public class GadgetDistributorHandler {
 
@@ -20,6 +22,7 @@ public class GadgetDistributorHandler {
         this.gadgetDistributorRepository = gadgetDistributorRepository;
     }
 
+    @NotNull
     public Mono<ServerResponse> findGadgetsByUser(ServerRequest request) {
         String userId = request.pathVariable("userId");
         Flux<UserGadget> gadgets = gadgetDistributorRepository.findAllByUserId(userId);

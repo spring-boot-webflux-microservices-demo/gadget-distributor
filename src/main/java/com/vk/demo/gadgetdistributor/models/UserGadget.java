@@ -18,6 +18,12 @@ public class UserGadget {
     private String gadgetType;
     private String gadgetSpecifications;
 
+
+    public UserGadget() {}
+    public UserGadget(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

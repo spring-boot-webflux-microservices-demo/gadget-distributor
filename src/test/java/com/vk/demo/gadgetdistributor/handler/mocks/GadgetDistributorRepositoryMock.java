@@ -10,13 +10,14 @@ import java.util.List;
 
 public class GadgetDistributorRepositoryMock implements GadgetDistributorRepository {
 
-    public GadgetDistributorRepositoryMock(List<UserGadget> userGadget) {
-
+    private List<UserGadget> userGadgets;
+    public GadgetDistributorRepositoryMock(List<UserGadget> userGadgets) {
+        this.userGadgets = userGadgets;
     }
 
     @Override
     public Flux<UserGadget> findAllByUserId(String userId) {
-        return null;
+        return Flux.fromIterable(userGadgets);
     }
 
     @Override

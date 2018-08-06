@@ -22,7 +22,7 @@ public class GadgetDistributorRepositoryMock implements GadgetDistributorReposit
 
     @Override
     public <S extends UserGadget> Mono<S> save(S s) {
-        return null;
+        return Mono.just(s);
     }
 
     @Override

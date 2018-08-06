@@ -13,7 +13,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class RoutingConfig {
 
     public RouterFunction<ServerResponse> routeGadgetDistributions(GadgetDistributorHandler handler) {
-        return route(GET("/gadgetDistributor/findGadgetsByUser/{userId}")
-                .and(accept(MediaType.APPLICATION_JSON_UTF8)), handler::findGadgetsByUser);
+        return route(GET("/gadgetDistributor/findGadgetsByUser/{userId}").and(accept(MediaType.APPLICATION_JSON_UTF8)), handler::findGadgetsByUser)
+                .andRoute(POST("/gadgetDistributor/saveUserGadget/{userId}/{gadgetId}").and(accept(MediaType.APPLICATION_JSON_UTF8)), handler::saveUserGadget);
     }
 }

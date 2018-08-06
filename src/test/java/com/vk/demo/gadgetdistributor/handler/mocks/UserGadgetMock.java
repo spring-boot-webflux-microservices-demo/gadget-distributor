@@ -35,4 +35,15 @@ public class UserGadgetMock {
                 "\"gadgetType\":\"gadgetTypeMock\"," +
                 "\"gadgetSpecifications\":\"gadgetSpecsMock\"}]\n";
     }
+
+    public static String createRawJsonObject() {
+        return "{\"id\":\"userGadgetIdMock\"," +
+                "\"userId\":\"userIdMock\"," +
+                "\"userFirstName\":\"userFirstNameMock\"," +
+                "\"userLastName\":\"userLastNameMock\"," +
+                "\"userAge\":99," +
+                "\"gadgetId\":\"gadgetIdMock\"," +
+                "\"gadgetType\":\"gadgetTypeMock\"," +
+                "\"gadgetSpecifications\":\"gadgetSpecsMock\"}\n";
+    }
 }

@@ -1,5 +1,6 @@
 package com.vk.demo.gadgetdistributor.handler;
 
+import com.vk.demo.gadgetdistributor.handler.mocks.Api1ClientMock;
 import com.vk.demo.gadgetdistributor.handler.mocks.GadgetDistributorRepositoryMock;
 import com.vk.demo.gadgetdistributor.handler.mocks.UserGadgetMock;
 import com.vk.demo.gadgetdistributor.models.UserGadget;
@@ -33,7 +34,8 @@ public class GadgetDistributorHandlerTest {
         UserGadget userGadget = UserGadgetMock.createMock();
         List<UserGadget> userGadgets = Collections.singletonList(userGadget);
         GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(userGadgets);
-        GadgetDistributorHandler gadgetHandler = new GadgetDistributorHandler(gadgetDistributorRepositoryMock);
+        Api1ClientMock api1ClientMock = new Api1ClientMock();
+        GadgetDistributorHandler gadgetHandler = new GadgetDistributorHandler(api1ClientMock, gadgetDistributorRepositoryMock);
         webTestClient = WebTestClient.bindToRouterFunction(route(GET(FIND_GADGETS_BY_USER_ENDPOINT)
                 .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetHandler::findGadgetsByUser)).build();
 
@@ -49,7 +51,8 @@ public class GadgetDistributorHandlerTest {
         UserGadget userGadget = UserGadgetMock.createMock();
         List<UserGadget> userGadgets = Collections.singletonList(userGadget);
         GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(userGadgets);
-        GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(gadgetDistributorRepositoryMock);
+        Api1ClientMock api1ClientMock = new Api1ClientMock();
+        GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(api1ClientMock, gadgetDistributorRepositoryMock);
         webTestClient = WebTestClient.bindToRouterFunction(route(POST(SAVE_USER_GADGET_ENDPOINT)
                 .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetDistributorHandler::saveUserGadget)).build();
 

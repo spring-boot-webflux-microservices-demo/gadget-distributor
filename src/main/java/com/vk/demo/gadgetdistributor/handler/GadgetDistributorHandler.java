@@ -1,6 +1,7 @@
 package com.vk.demo.gadgetdistributor.handler;
 
 import com.vk.demo.gadgetdistributor.clients.Api1Client;
+import com.vk.demo.gadgetdistributor.models.User;
 import com.vk.demo.gadgetdistributor.models.UserGadget;
 import com.vk.demo.gadgetdistributor.repositories.GadgetDistributorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,9 @@ public class GadgetDistributorHandler {
 
     @NotNull
     public Mono<ServerResponse> findGadgetsByUser(ServerRequest request) {
-        api1Client.findAll();
-
         String userId = request.pathVariable("userId");
+        User user = api1Client.findUser(userId);
+
         Flux<UserGadget> gadgets = gadgetDistributorRepository.findAllByUserId(userId);
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(gadgets, UserGadget.class);
     }
@@ -42,12 +43,12 @@ public class GadgetDistributorHandler {
         String userId = request.pathVariable("userId");
         String gadgetid = request.pathVariable("gadgetId");
 
-        api1Client.findAll();
+//        api1Client.findUser();
 
         UserGadget userGadget = new UserGadget();
 
         Mono<UserGadget> saved = gadgetDistributorRepository.save(userGadget);
-        return saved.flatMap(s -> ServerResponse.created(URI.create(SAVE_USER_GADGET + s.getUserId() + SLASH + s.getGadgetId()))
+        return saved.flatMap(s -> ServerResponse.created(URI.create(SAVE_USER_GADGET + s.getUser().getId() + SLASH + s.getGadget().getId()))
                 .body(Mono.just(userGadget), UserGadget.class));
     }
 

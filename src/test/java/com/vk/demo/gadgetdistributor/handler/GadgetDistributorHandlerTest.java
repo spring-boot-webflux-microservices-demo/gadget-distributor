@@ -39,7 +39,7 @@ public class GadgetDistributorHandlerTest {
         webTestClient = WebTestClient.bindToRouterFunction(route(GET(FIND_GADGETS_BY_USER_ENDPOINT)
                 .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetHandler::findGadgetsByUser)).build();
 
-        webTestClient.get().uri(FIND_GADGETS_BY_USER + userGadget.getUserId())
+        webTestClient.get().uri(FIND_GADGETS_BY_USER + userGadget.getUser().getId())
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus().isOk()
@@ -56,7 +56,7 @@ public class GadgetDistributorHandlerTest {
         webTestClient = WebTestClient.bindToRouterFunction(route(POST(SAVE_USER_GADGET_ENDPOINT)
                 .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetDistributorHandler::saveUserGadget)).build();
 
-        webTestClient.post().uri(SAVE_USER_GADGET + userGadget.getUserId() + SLASH + userGadget.getGadgetId())
+        webTestClient.post().uri(SAVE_USER_GADGET + userGadget.getUser().getId() + SLASH + userGadget.getGadget().getId())
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus().isCreated()

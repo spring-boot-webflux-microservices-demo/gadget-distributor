@@ -1,15 +1,13 @@
 package com.vk.demo.gadgetdistributor.handler;
 
-import com.vk.demo.gadgetdistributor.clients.Api1Client;
 import com.vk.demo.gadgetdistributor.models.User;
 import com.vk.demo.gadgetdistributor.models.UserGadget;
 import com.vk.demo.gadgetdistributor.repositories.GadgetDistributorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.constraints.NotNull;
@@ -21,21 +19,19 @@ public class GadgetDistributorHandler {
     private static final String SAVE_USER_GADGET = "/gadgetDistributor/saveUserGadget/";
     private static final String SLASH = "/";
     private GadgetDistributorRepository gadgetDistributorRepository;
-    private Api1Client api1Client;
+    private WebClient.Builder webClientBuilder;
 
     @Autowired
-    public GadgetDistributorHandler(Api1Client api1Client, GadgetDistributorRepository gadgetDistributorRepository) {
-        this.api1Client = api1Client;
+    public GadgetDistributorHandler(WebClient.Builder webClientBuilder, GadgetDistributorRepository gadgetDistributorRepository) {
+        this.webClientBuilder = webClientBuilder;
         this.gadgetDistributorRepository = gadgetDistributorRepository;
     }
 
     @NotNull
     public Mono<ServerResponse> findGadgetsByUser(ServerRequest request) {
         String userId = request.pathVariable("userId");
-        User user = api1Client.findUser(userId);
-
-        Flux<UserGadget> gadgets = gadgetDistributorRepository.findAllByUserId(userId);
-        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).body(gadgets, UserGadget.class);
+        Mono<User> user = webClientBuilder.build().get().uri("http://api1/api1/findUser/{id}", userId).retrieve().bodyToMono(User.class);
+        return user.flatMap(a -> ServerResponse.ok().body(user, User.class));
     }
 
     @NotNull

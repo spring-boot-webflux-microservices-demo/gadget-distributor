@@ -4,18 +4,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Document
-public class UserGadget {
+public class UserGadgets {
 
     @Id
     private String id;
     @JsonProperty("user")
     private User user;
     @JsonProperty("gadget")
-    private Gadget gadget;
+    private List<Gadget> gadgets;
 
-    public UserGadget() {}
-    public UserGadget(String id, User user, Gadget gadget) {
+    public UserGadgets() {}
+
+    public UserGadgets(User user, Gadget gadget) {
+        this.user = user;
+        this.gadgets = new ArrayList<>();
+        this.gadgets.add(gadget);
+    }
+
+    public UserGadgets(String id, User user, Gadget gadget) {
+        this(user, gadget);
         this.id = id;
     }
 
@@ -35,11 +46,11 @@ public class UserGadget {
         this.user = user;
     }
 
-    public Gadget getGadget() {
-        return gadget;
+    public List<Gadget> getGadgets() {
+        return gadgets;
     }
 
-    public void setGadget(Gadget gadget) {
-        this.gadget = gadget;
+    public void setGadgets(List<Gadget> gadgets) {
+        this.gadgets = gadgets;
     }
 }

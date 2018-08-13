@@ -1,7 +1,8 @@
 package com.vk.demo.gadgetdistributor.handler;
 
+import com.vk.demo.gadgetdistributor.models.Gadget;
 import com.vk.demo.gadgetdistributor.models.User;
-import com.vk.demo.gadgetdistributor.models.UserGadget;
+import com.vk.demo.gadgetdistributor.models.UserGadgets;
 import com.vk.demo.gadgetdistributor.repositories.GadgetDistributorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,22 +31,21 @@ public class GadgetDistributorHandler {
     @NotNull
     public Mono<ServerResponse> findGadgetsByUser(ServerRequest request) {
         String userId = request.pathVariable("userId");
-        Mono<User> user = webClientBuilder.build().get().uri("http://api1/api1/findUser/{id}", userId).retrieve().bodyToMono(User.class);
-        return user.flatMap(a -> ServerResponse.ok().body(user, User.class));
+        return Mono.empty();
     }
 
     @NotNull
     public Mono<ServerResponse> saveUserGadget(ServerRequest request) {
         String userId = request.pathVariable("userId");
-        String gadgetid = request.pathVariable("gadgetId");
+        String gadgetId = request.pathVariable("gadgetId");
+        Mono<User> user = webClientBuilder.build().get().uri("http://api1/api1/findUser/{id}", userId).retrieve().bodyToMono(User.class);
+        Mono<Gadget> gadget = webClientBuilder.build().get().uri("http://api2/api2/findGadgetById/{id}", gadgetId).retrieve().bodyToMono(Gadget.class);
 
-//        api1Client.findUser();
-
-        UserGadget userGadget = new UserGadget();
-
-        Mono<UserGadget> saved = gadgetDistributorRepository.save(userGadget);
-        return saved.flatMap(s -> ServerResponse.created(URI.create(SAVE_USER_GADGET + s.getUser().getId() + SLASH + s.getGadget().getId()))
-                .body(Mono.just(userGadget), UserGadget.class));
+        UserGadgets result = new UserGadgets();
+        Mono<UserGadgets> userGadgets = Mono.zip(user, gadget, UserGadgets::new);
+        userGadgets.subscribe(u -> {result.setUser(u.getUser()); result.setGadgets(u.getGadgets());});
+        Mono<UserGadgets> saved = userGadgets.flatMap(gadgetDistributorRepository::save);
+        return saved.flatMap(s -> ServerResponse.created(URI.create(SAVE_USER_GADGET + userId + SLASH + gadgetId))
+                .body(saved, UserGadgets.class));
     }
-
 }

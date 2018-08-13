@@ -1,11 +1,9 @@
 package com.vk.demo.gadgetdistributor.handler;
 
-import com.vk.demo.gadgetdistributor.clients.WebClientBuilder;
-import com.vk.demo.gadgetdistributor.handler.mocks.Api1ClientMock;
 import com.vk.demo.gadgetdistributor.handler.mocks.GadgetDistributorRepositoryMock;
-import com.vk.demo.gadgetdistributor.handler.mocks.UserGadgetMock;
-import com.vk.demo.gadgetdistributor.models.UserGadget;
-import org.junit.Ignore;
+import com.vk.demo.gadgetdistributor.handler.mocks.UserGadgetsMock;
+import com.vk.demo.gadgetdistributor.handler.mocks.WebClientBuilderMock;
+import com.vk.demo.gadgetdistributor.models.UserGadgets;
 import org.junit.Test;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +14,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Collections;
 import java.util.List;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -31,12 +28,13 @@ public class GadgetDistributorHandlerTest {
     private static final String SAVE_USER_GADGET = "/gadgetDistributor/saveUserGadget/";
     private static final String SLASH = "/";
     private WebTestClient webTestClient;
-/*
 
-    @Ignore
+    private WebClient.Builder webClientBuilder;
+
+/*    @Ignore
     public void findGadgetsByUser_returnWithHttpStatus200() {
-        UserGadget userGadget = UserGadgetMock.createMock();
-        List<UserGadget> userGadgets = Collections.singletonList(userGadget);
+        UserGadgets userGadget = UserGadgetsMock.createMock();
+        List<UserGadgets> userGadgets = Collections.singletonList(userGadget);
         GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(userGadgets);
         Api1ClientMock api1ClientMock = new Api1ClientMock();
         GadgetDistributorHandler gadgetHandler = new GadgetDistributorHandler(new WebClient.Builder(), gadgetDistributorRepositoryMock);
@@ -47,26 +45,26 @@ public class GadgetDistributorHandlerTest {
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody().json(UserGadgetMock.createRawJsonArray());
+                .expectBody().json(UserGadgetsMock.createRawJsonArray());
     }
+*/
+    @Test
+    public void saveUserGadgets_returnedSavedWithHttpStatus201() {
+        webClientBuilder = new WebClientBuilderMock();
 
-    @Ignore
-    public void saveUserGadget_returnedSavedWithHttpStatus201() {
-        UserGadget userGadget = UserGadgetMock.createMock();
-        List<UserGadget> userGadgets = Collections.singletonList(userGadget);
+        UserGadgets userGadget = UserGadgetsMock.createMock();
+        List<UserGadgets> userGadgets = Collections.singletonList(userGadget);
         GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(userGadgets);
-        Api1ClientMock api1ClientMock = new Api1ClientMock();
-        GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(new WebClientBuilder(), gadgetDistributorRepositoryMock);
+        GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(webClientBuilder, gadgetDistributorRepositoryMock);
         webTestClient = WebTestClient.bindToRouterFunction(route(POST(SAVE_USER_GADGET_ENDPOINT)
                 .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetDistributorHandler::saveUserGadget)).build();
 
-        webTestClient.post().uri(SAVE_USER_GADGET + userGadget.getUser().getId() + SLASH + userGadget.getGadget().getId())
+        webTestClient.post().uri(SAVE_USER_GADGET + userGadget.getUser().getId() + SLASH + userGadget.getGadgets().iterator().next().getId())
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectBody().json(UserGadgetMock.createRawJsonObject());
+                .expectBody().json(UserGadgetsMock.createRawJsonObject());
     }
-*/
 
     @Test
     public void saveUserGadget_whenAlreadyExists_deleteExistingAndSaveWithHttpStatus201() {

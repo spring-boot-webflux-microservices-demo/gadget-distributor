@@ -1,6 +1,6 @@
 package com.vk.demo.gadgetdistributor.handler.mocks;
 
-import com.vk.demo.gadgetdistributor.models.UserGadget;
+import com.vk.demo.gadgetdistributor.models.UserGadgets;
 import com.vk.demo.gadgetdistributor.repositories.GadgetDistributorRepository;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -10,38 +10,38 @@ import java.util.List;
 
 public class GadgetDistributorRepositoryMock implements GadgetDistributorRepository {
 
-    private List<UserGadget> userGadgets;
-    public GadgetDistributorRepositoryMock(List<UserGadget> userGadgets) {
+    private List<UserGadgets> userGadgets;
+    public GadgetDistributorRepositoryMock(List<UserGadgets> userGadgets) {
         this.userGadgets = userGadgets;
     }
 
     @Override
-    public Flux<UserGadget> findAllByUserId(String userId) {
-        return Flux.fromIterable(userGadgets);
+    public Mono<UserGadgets> findByUserId(String userId) {
+        return userGadgets != null && !userGadgets.isEmpty() ? Mono.just(userGadgets.iterator().next()) : Mono.empty();
     }
 
     @Override
-    public <S extends UserGadget> Mono<S> save(S s) {
+    public <S extends UserGadgets> Mono<S> save(S s) {
         return Mono.just(s);
     }
 
     @Override
-    public <S extends UserGadget> Flux<S> saveAll(Iterable<S> iterable) {
+    public <S extends UserGadgets> Flux<S> saveAll(Iterable<S> iterable) {
         return null;
     }
 
     @Override
-    public <S extends UserGadget> Flux<S> saveAll(Publisher<S> publisher) {
+    public <S extends UserGadgets> Flux<S> saveAll(Publisher<S> publisher) {
         return null;
     }
 
     @Override
-    public Mono<UserGadget> findById(String s) {
+    public Mono<UserGadgets> findById(String s) {
         return null;
     }
 
     @Override
-    public Mono<UserGadget> findById(Publisher<String> publisher) {
+    public Mono<UserGadgets> findById(Publisher<String> publisher) {
         return null;
     }
 
@@ -56,17 +56,17 @@ public class GadgetDistributorRepositoryMock implements GadgetDistributorReposit
     }
 
     @Override
-    public Flux<UserGadget> findAll() {
+    public Flux<UserGadgets> findAll() {
         return null;
     }
 
     @Override
-    public Flux<UserGadget> findAllById(Iterable<String> iterable) {
+    public Flux<UserGadgets> findAllById(Iterable<String> iterable) {
         return null;
     }
 
     @Override
-    public Flux<UserGadget> findAllById(Publisher<String> publisher) {
+    public Flux<UserGadgets> findAllById(Publisher<String> publisher) {
         return null;
     }
 
@@ -86,17 +86,17 @@ public class GadgetDistributorRepositoryMock implements GadgetDistributorReposit
     }
 
     @Override
-    public Mono<Void> delete(UserGadget userGadget) {
+    public Mono<Void> delete(UserGadgets userGadgets) {
         return null;
     }
 
     @Override
-    public Mono<Void> deleteAll(Iterable<? extends UserGadget> iterable) {
+    public Mono<Void> deleteAll(Iterable<? extends UserGadgets> iterable) {
         return null;
     }
 
     @Override
-    public Mono<Void> deleteAll(Publisher<? extends UserGadget> publisher) {
+    public Mono<Void> deleteAll(Publisher<? extends UserGadgets> publisher) {
         return null;
     }
 

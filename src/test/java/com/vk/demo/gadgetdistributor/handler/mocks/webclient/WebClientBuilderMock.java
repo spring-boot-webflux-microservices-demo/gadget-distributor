@@ -1,5 +1,6 @@
-package com.vk.demo.gadgetdistributor.handler.mocks;
+package com.vk.demo.gadgetdistributor.handler.mocks.webclient;
 
+import com.vk.demo.gadgetdistributor.handler.mocks.webclient.WebClientMock;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.reactive.ClientHttpConnector;
 import org.springframework.util.MultiValueMap;

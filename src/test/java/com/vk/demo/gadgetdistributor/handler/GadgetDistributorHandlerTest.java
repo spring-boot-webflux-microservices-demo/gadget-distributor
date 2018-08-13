@@ -2,7 +2,7 @@ package com.vk.demo.gadgetdistributor.handler;
 
 import com.vk.demo.gadgetdistributor.handler.mocks.GadgetDistributorRepositoryMock;
 import com.vk.demo.gadgetdistributor.handler.mocks.UserGadgetsMock;
-import com.vk.demo.gadgetdistributor.handler.mocks.WebClientBuilderMock;
+import com.vk.demo.gadgetdistributor.handler.mocks.webclient.WebClientBuilderMock;
 import com.vk.demo.gadgetdistributor.models.UserGadgets;
 import org.junit.Test;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;

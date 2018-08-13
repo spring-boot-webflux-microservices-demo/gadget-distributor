@@ -1,5 +1,8 @@
-package com.vk.demo.gadgetdistributor.handler.mocks;
+package com.vk.demo.gadgetdistributor.handler.mocks.webclient;
 
+import com.vk.demo.gadgetdistributor.handler.mocks.GadgetMock;
+import com.vk.demo.gadgetdistributor.handler.mocks.UserMock;
+import com.vk.demo.gadgetdistributor.handler.mocks.webclient.RequestHeadersUriSpecMock;
 import com.vk.demo.gadgetdistributor.models.Gadget;
 import com.vk.demo.gadgetdistributor.models.User;
 import org.springframework.core.ParameterizedTypeReference;

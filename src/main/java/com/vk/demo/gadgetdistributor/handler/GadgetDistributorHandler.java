@@ -39,7 +39,7 @@ public class GadgetDistributorHandler {
         String userId = request.pathVariable("userId");
         String gadgetId = request.pathVariable("gadgetId");
         Mono<User> user = webClientBuilder.build().get().uri("http://api1/api1/findUser/{id}", userId).retrieve().bodyToMono(User.class);
-        Mono<Gadget> gadget = webClientBuilder.build().get().uri("http://api2/api2/findGadgetById/{id}", gadgetId).retrieve().bodyToMono(Gadget.class);
+        Mono<Gadget> gadget = webClientBuilder.build().get().uri("http://api2/api2/findGadget/{id}", gadgetId).retrieve().bodyToMono(Gadget.class);
 
         UserGadgets result = new UserGadgets();
         Mono<UserGadgets> userGadgets = Mono.zip(user, gadget, UserGadgets::new);

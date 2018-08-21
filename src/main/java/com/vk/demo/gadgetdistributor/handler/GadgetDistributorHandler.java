@@ -36,11 +36,7 @@ public class GadgetDistributorHandler {
                 .uri("http://api1/api1/findUser/{id}", userId)
                 .retrieve()
                 .bodyToMono(User.class);
-        return userMono.map(this::getUserInString).flatMap(u -> ServerResponse.ok().body(Mono.just(u), String.class));
-    }
-
-    private String getUserInString(User user) {
-        return user.getFirstName();
+        return userMono.flatMap(u -> ServerResponse.ok().body(Mono.just(u), User.class));
     }
 
     @NotNull

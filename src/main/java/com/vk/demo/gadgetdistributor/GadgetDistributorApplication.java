@@ -5,11 +5,9 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
 @EnableEurekaClient
-@EnableFeignClients
 @EnableReactiveMongoRepositories
 @AutoConfigureAfter(EmbeddedMongoAutoConfiguration.class)
 @SpringBootApplication

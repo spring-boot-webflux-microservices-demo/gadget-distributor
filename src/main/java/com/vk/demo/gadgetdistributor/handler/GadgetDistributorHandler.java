@@ -31,7 +31,16 @@ public class GadgetDistributorHandler {
     @NotNull
     public Mono<ServerResponse> findGadgetsByUser(ServerRequest request) {
         String userId = request.pathVariable("userId");
-        return Mono.empty();
+
+        Mono<User> userMono = webClientBuilder.build().get()
+                .uri("http://api1/api1/findUser/{id}", userId)
+                .retrieve()
+                .bodyToMono(User.class);
+        return userMono.map(this::getUserInString).flatMap(u -> ServerResponse.ok().body(Mono.just(u), String.class));
+    }
+
+    private String getUserInString(User user) {
+        return user.getFirstName();
     }
 
     @NotNull

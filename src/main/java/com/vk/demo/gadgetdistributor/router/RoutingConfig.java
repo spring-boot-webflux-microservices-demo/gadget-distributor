@@ -15,7 +15,8 @@ public class RoutingConfig {
 
     @Bean
     public RouterFunction<ServerResponse> routeGadgetDistributions(GadgetDistributorHandler handler) {
-        return route(GET("/gadgetDistributor/findGadgetsByUser/{userId}").and(accept(MediaType.APPLICATION_JSON_UTF8)), handler::findGadgetsByUser)
+        return route(GET("/gadgetDistributor/findAll").and(accept(MediaType.APPLICATION_JSON_UTF8)), handler::findAll)
+                .andRoute(GET("/gadgetDistributor/findGadgetsByUser/{userId}").and(accept(MediaType.APPLICATION_JSON_UTF8)), handler::findGadgetsByUser)
                 .andRoute(POST("/gadgetDistributor/saveUserGadget/{userId}/{gadgetId}").and(accept(MediaType.APPLICATION_JSON_UTF8)), handler::saveUserGadget);
     }
 }

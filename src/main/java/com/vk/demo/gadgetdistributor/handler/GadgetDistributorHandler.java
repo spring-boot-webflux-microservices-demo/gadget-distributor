@@ -40,11 +40,13 @@ public class GadgetDistributorHandler {
     @NotNull
     public Mono<ServerResponse> findGadgetsByUser(ServerRequest request) {
         String userId = request.pathVariable("userId");
-        Mono<User> userMono = webClientBuilder.build().get()
-                .uri("http://api1/api1/findUser/{id}", userId)
-                .retrieve()
-                .bodyToMono(User.class);
-        return userMono.flatMap(u -> ServerResponse.ok().body(Mono.just(u), User.class));
+        Mono<UserGadgets> userGadgets = gadgetDistributorRepository.findAll()
+                .filter(ug -> ug.getUser().getId().equals(userId))
+                .next();
+        return userGadgets.flatMap(ug -> ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .body(userGadgets, UserGadgets.class))
+                .switchIfEmpty(ServerResponse.notFound().build());
     }
 
     @NotNull

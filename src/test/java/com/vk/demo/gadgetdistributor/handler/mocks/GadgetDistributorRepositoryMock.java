@@ -16,11 +16,6 @@ public class GadgetDistributorRepositoryMock implements GadgetDistributorReposit
     }
 
     @Override
-    public Mono<UserGadgets> findByUserId(String userId) {
-        return userGadgets != null && !userGadgets.isEmpty() ? Mono.just(userGadgets.iterator().next()) : Mono.empty();
-    }
-
-    @Override
     public <S extends UserGadgets> Mono<S> save(S s) {
         return Mono.just(s);
     }

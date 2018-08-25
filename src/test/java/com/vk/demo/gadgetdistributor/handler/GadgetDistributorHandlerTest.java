@@ -29,7 +29,8 @@ public class GadgetDistributorHandlerTest {
     private static final String FIND_ALL_USER_GADGETS = "/gadgetDistributor/findAll";
     private static final String SAVE_USER_GADGET_ENDPOINT = "/gadgetDistributor/saveUserGadget/user/{userId}/gadget/{gadgetId}";
     private static final String SAVE_USER_GADGET = "/gadgetDistributor/saveUserGadgets/";
-    private static final String DELETE_USER_GADGETS_BY_USER_ENDPOINT = "/gadgetDistributor/deleteUserGadgetsByUser/{userId}";
+    private static final String DELETE_USER_GADGETS_BY_USER_ROUTE_ENDPOINT = "/gadgetDistributor/deleteUserGadgetsByUser/{userId}";
+    private static final String DELETE_USER_GADGETS_BY_USER_ENDPOINT = "/gadgetDistributor/deleteUserGadgetsByUser/";
     private static final String USER_ID_NOT_EXIST = "userIdNotExist";
     private static final String USER = "user/";
     private static final String GADGET = "/gadget/";
@@ -110,16 +111,31 @@ public class GadgetDistributorHandlerTest {
     }
 
     @Test
-    public void saveUserGadget_whenAlreadyExists_deleteExistingAndSaveWithHttpStatus201() {
+    public void deleteUserGadgetsByUser_whenAlreadyExists_deleteExistingAndSaveWithHttpStatus204() {
         UserGadgets userGadgets = UserGadgetsMock.createMock();
         GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(Collections.singletonList(userGadgets));
         GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(webClientBuilder, gadgetDistributorRepositoryMock);
 
-        webTestClient = WebTestClient.bindToRouterFunction(route(DELETE(DELETE_USER_GADGETS_BY_USER_ENDPOINT)
+        webTestClient = WebTestClient.bindToRouterFunction(route(DELETE(DELETE_USER_GADGETS_BY_USER_ROUTE_ENDPOINT)
                 .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetDistributorHandler::deleteUserGadgetsByUser)).build();
 
-        webTestClient.delete().uri(DELETE_USER_GADGETS_BY_USER_ENDPOINT, userGadgets.getUser().getId())
+        webTestClient.delete().uri(DELETE_USER_GADGETS_BY_USER_ENDPOINT + userGadgets.getUser().getId())
+                .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus().isNoContent();
+    }
+
+    @Test
+    public void deleteUserGadgetsByUser_whenUserIdNotExists_returnHttpStatus404() {
+        GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(Collections.emptyList());
+        GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(webClientBuilder, gadgetDistributorRepositoryMock);
+
+        webTestClient = WebTestClient.bindToRouterFunction(route(DELETE(DELETE_USER_GADGETS_BY_USER_ROUTE_ENDPOINT)
+                .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetDistributorHandler::deleteUserGadgetsByUser)).build();
+
+        webTestClient.delete().uri(DELETE_USER_GADGETS_BY_USER_ENDPOINT, USER_ID_NOT_EXIST)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .exchange()
+                .expectStatus().isNotFound();
     }
 }

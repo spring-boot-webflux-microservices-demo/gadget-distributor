@@ -82,7 +82,7 @@ public class GadgetDistributorRepositoryMock implements GadgetDistributorReposit
 
     @Override
     public Mono<Void> delete(UserGadgets userGadgets) {
-        return null;
+        return Mono.when(Mono.just(userGadgets));
     }
 
     @Override

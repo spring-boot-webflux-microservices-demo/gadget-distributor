@@ -20,8 +20,6 @@ import java.net.URI;
 @Component
 public class GadgetDistributorHandler {
 
-    private static final String SAVE_USER_GADGET = "/gadgetDistributor/saveUserGadget/";
-    private static final String SLASH = "/";
     private GadgetDistributorRepository gadgetDistributorRepository;
     private WebClient.Builder webClientBuilder;
 
@@ -65,5 +63,15 @@ public class GadgetDistributorHandler {
         Mono<UserGadgets> userGadgets = Mono.zip(user, gadget, UserGadgets::new);
         Mono<UserGadgets> saved = userGadgets.flatMap(gadgetDistributorRepository::save);
         return saved.flatMap(ug -> ServerResponse.created(URI.create("/gadgetDistribution/save/" + ug.getId())).body(Mono.just(ug), UserGadgets.class));
+    }
+
+    @NonNull
+    public Mono<ServerResponse> deleteUserGadgetsByUser(ServerRequest request) {
+        String userId = request.pathVariable("userId");
+        Mono<UserGadgets> userGadgets = gadgetDistributorRepository.findAll()
+                .filter(ug -> ug.getUser().getId().equals(userId)).next();
+        return userGadgets.flatMap(ug -> gadgetDistributorRepository.delete(ug))
+                .then(ServerResponse.noContent().build())
+                .switchIfEmpty(ServerResponse.notFound().build());
     }
 }

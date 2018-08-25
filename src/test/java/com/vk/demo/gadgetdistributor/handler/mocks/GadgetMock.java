@@ -11,4 +11,12 @@ public class GadgetMock {
     public static Gadget createMock() {
         return new Gadget(ID_MOCK, TYPE_MOCK, SPECIFICATIONS_MOCK);
     }
+
+    public static String createRawJsonObject() {
+        return "{" +
+                "\"id\":" + ID_MOCK + "," +
+                "\"type\":" + TYPE_MOCK + "," +
+                "\"specifications\":" + SPECIFICATIONS_MOCK +
+                "}\n";
+    }
 }

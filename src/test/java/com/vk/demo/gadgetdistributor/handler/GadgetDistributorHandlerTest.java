@@ -1,6 +1,7 @@
 package com.vk.demo.gadgetdistributor.handler;
 
 import com.vk.demo.gadgetdistributor.handler.mocks.GadgetDistributorRepositoryMock;
+import com.vk.demo.gadgetdistributor.handler.mocks.GadgetMock;
 import com.vk.demo.gadgetdistributor.handler.mocks.UserGadgetsMock;
 import com.vk.demo.gadgetdistributor.handler.mocks.webclient.WebClientBuilderMock;
 import com.vk.demo.gadgetdistributor.models.UserGadgets;
@@ -27,7 +28,6 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class GadgetDistributorHandlerTest {
 
     private static final String FIND_GADGETS_BY_USER_ENDPOINT = "/gadgetDistributor/findGadgetsByUser/{userId}";
-    private static final String FIND_GADGETS_BY_USER = "/gadgetDistributor/findGadgetsByUser/";
     private static final String FIND_ALL_USER_GADGETS = "/gadgetDistributor/findAll";
     private static final String SAVE_USER_GADGET_ENDPOINT = "/gadgetDistributor/saveUserGadget/{userId}/{gadgetId}";
     private static final String SAVE_USER_GADGET = "/gadgetDistributor/saveUserGadget/";
@@ -55,6 +55,22 @@ public class GadgetDistributorHandlerTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody().json("[" + UserGadgetsMock.createRawJsonObject() + ", " + UserGadgetsMock.createRawJsonObject() + "]");
+    }
+
+    @Test
+    public void findGadgetsByUser() {
+        List<UserGadgets> userGadgets = Arrays.asList(UserGadgetsMock.createMock(), UserGadgetsMock.createMock());
+        GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(userGadgets);
+        GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(webClientBuilder, gadgetDistributorRepositoryMock);
+
+        webTestClient = WebTestClient.bindToRouterFunction(route(GET(FIND_GADGETS_BY_USER_ENDPOINT)
+                .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetDistributorHandler::findGadgetsByUser)).build();
+
+        webTestClient.get().uri(FIND_GADGETS_BY_USER_ENDPOINT, UserGadgetsMock.createMock().getUser().getId())
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody().json("[" + GadgetMock.createRawJsonObject() + ", " + GadgetMock.createRawJsonObject() + "]");
     }
 
     @Test

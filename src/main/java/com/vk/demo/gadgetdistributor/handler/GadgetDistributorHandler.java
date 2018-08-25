@@ -42,12 +42,12 @@ public class GadgetDistributorHandler {
     @NotNull
     public Mono<ServerResponse> findGadgetsByUser(ServerRequest request) {
         String userId = request.pathVariable("userId");
-        Mono<UserGadgets> userGadgets = gadgetDistributorRepository.findAll()
+        Flux<Gadget> userGadgets = gadgetDistributorRepository.findAll()
                 .filter(ug -> ug.getUser().getId().equals(userId))
-                .next();
-        return userGadgets.flatMap(ug -> ServerResponse.ok()
+                .flatMap(ug -> Flux.fromIterable(ug.getGadgets()));
+        return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .body(userGadgets, UserGadgets.class))
+                .body(userGadgets, Gadget.class)
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 

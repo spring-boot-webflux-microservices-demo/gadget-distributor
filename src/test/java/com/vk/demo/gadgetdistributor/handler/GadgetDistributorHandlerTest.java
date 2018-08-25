@@ -29,10 +29,11 @@ public class GadgetDistributorHandlerTest {
 
     private static final String FIND_GADGETS_BY_USER_ENDPOINT = "/gadgetDistributor/findGadgetsByUser/{userId}";
     private static final String FIND_ALL_USER_GADGETS = "/gadgetDistributor/findAll";
-    private static final String SAVE_USER_GADGET_ENDPOINT = "/gadgetDistributor/saveUserGadget/{userId}/{gadgetId}";
+    private static final String SAVE_USER_GADGET_ENDPOINT = "/gadgetDistributor/saveUserGadget/user/{userId}/gadget/{gadgetId}";
     private static final String SAVE_USER_GADGET = "/gadgetDistributor/saveUserGadget/";
     private static final String USER_ID_NOT_EXIST = "userIdNotExist";
-    private static final String SLASH = "/";
+    private static final String USER = "user/";
+    private static final String GADGET = "/gadget/";
     private static final String EMPTY_JSON_LIST = "[]";
     private WebTestClient webTestClient;
 
@@ -102,7 +103,7 @@ public class GadgetDistributorHandlerTest {
         webTestClient = WebTestClient.bindToRouterFunction(route(POST(SAVE_USER_GADGET_ENDPOINT)
                 .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetDistributorHandler::saveUserGadget)).build();
 
-        webTestClient.post().uri(SAVE_USER_GADGET + userGadget.getUser().getId() + SLASH + userGadget.getGadgets().iterator().next().getId())
+        webTestClient.post().uri(SAVE_USER_GADGET + USER + userGadget.getUser().getId() + GADGET + userGadget.getGadgets().iterator().next().getId())
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus().isCreated()

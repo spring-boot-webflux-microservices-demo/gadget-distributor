@@ -18,11 +18,11 @@ public class UserGadgetsMock {
     public static UserGadgets createMock() {
         User user = UserMock.createMock();
         Gadget gadget = GadgetMock.createMock();
-        return new UserGadgets(USER_GADGET_ID_MOCK, user, gadget);
+        return new UserGadgets(null, user, gadget);
     }
 
     public static String createRawJsonObject() {
-        return "{\"id\":" + USER_GADGET_ID_MOCK + "," +
+        return "{\"id\":" + null + "," +
                 "\"user\":{\"id\":" + MOCK_ID + "," +
                 "\"firstName\":" + MOCK_FIRST_NAME + "," +
                 "\"lastName\":" + MOCK_LAST_NAME + "," +

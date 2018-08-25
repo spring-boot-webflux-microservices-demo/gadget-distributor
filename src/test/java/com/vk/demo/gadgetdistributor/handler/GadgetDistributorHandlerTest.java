@@ -31,7 +31,9 @@ public class GadgetDistributorHandlerTest {
     private static final String FIND_ALL_USER_GADGETS = "/gadgetDistributor/findAll";
     private static final String SAVE_USER_GADGET_ENDPOINT = "/gadgetDistributor/saveUserGadget/{userId}/{gadgetId}";
     private static final String SAVE_USER_GADGET = "/gadgetDistributor/saveUserGadget/";
+    private static final String USER_ID_NOT_EXIST = "userIdNotExist";
     private static final String SLASH = "/";
+    private static final String EMPTY_JSON_LIST = "[]";
     private WebTestClient webTestClient;
 
     private WebClient.Builder webClientBuilder;
@@ -58,7 +60,7 @@ public class GadgetDistributorHandlerTest {
     }
 
     @Test
-    public void findGadgetsByUser() {
+    public void findGadgetsByUser_whenGadgetsExistByUserId_returnGadgetsWithHttpStatus200() {
         List<UserGadgets> userGadgets = Arrays.asList(UserGadgetsMock.createMock(), UserGadgetsMock.createMock());
         GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(userGadgets);
         GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(webClientBuilder, gadgetDistributorRepositoryMock);
@@ -71,6 +73,24 @@ public class GadgetDistributorHandlerTest {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody().json("[" + GadgetMock.createRawJsonObject() + ", " + GadgetMock.createRawJsonObject() + "]");
+    }
+
+    @Test
+    public void findGadgetsByUser_whenUserIdNotExist_returnEmptyWithHttpStatus200() {
+        List<UserGadgets> userGadgets = Arrays.asList(UserGadgetsMock.createMock(), UserGadgetsMock.createMock());
+        GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(userGadgets);
+        GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(webClientBuilder, gadgetDistributorRepositoryMock);
+
+        webTestClient = WebTestClient.bindToRouterFunction(route(GET(FIND_GADGETS_BY_USER_ENDPOINT)
+                .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetDistributorHandler::findGadgetsByUser)).build();
+
+
+        webTestClient.get().uri(FIND_GADGETS_BY_USER_ENDPOINT, USER_ID_NOT_EXIST)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody().json(EMPTY_JSON_LIST);
+
     }
 
     @Test

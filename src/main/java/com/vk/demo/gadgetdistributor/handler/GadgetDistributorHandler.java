@@ -47,8 +47,7 @@ public class GadgetDistributorHandler {
                 .flatMap(ug -> Flux.fromIterable(ug.getGadgets()));
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .body(userGadgets, Gadget.class)
-                .switchIfEmpty(ServerResponse.notFound().build());
+                .body(userGadgets, Gadget.class);
     }
 
     @NotNull

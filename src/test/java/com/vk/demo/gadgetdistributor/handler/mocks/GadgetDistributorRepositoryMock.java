@@ -52,7 +52,7 @@ public class GadgetDistributorRepositoryMock implements GadgetDistributorReposit
 
     @Override
     public Flux<UserGadgets> findAll() {
-        return null;
+        return Flux.fromIterable(userGadgets);
     }
 
     @Override

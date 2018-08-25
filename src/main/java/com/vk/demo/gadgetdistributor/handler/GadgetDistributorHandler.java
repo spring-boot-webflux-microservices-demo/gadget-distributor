@@ -6,6 +6,7 @@ import com.vk.demo.gadgetdistributor.models.UserGadgets;
 import com.vk.demo.gadgetdistributor.repositories.GadgetDistributorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -30,6 +31,7 @@ public class GadgetDistributorHandler {
         this.gadgetDistributorRepository = gadgetDistributorRepository;
     }
 
+    @NonNull
     public Mono<ServerResponse> findAll(ServerRequest request) {
         Flux<UserGadgets> userGadgets = gadgetDistributorRepository.findAll();
         return ServerResponse.ok()

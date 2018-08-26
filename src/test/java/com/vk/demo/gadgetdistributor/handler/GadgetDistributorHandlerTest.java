@@ -25,9 +25,10 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @SpringBootTest
 public class GadgetDistributorHandlerTest {
 
-    private static final String FIND_GADGETS_BY_USER_ENDPOINT = "/gadgetDistributor/findGadgetsByUser/{userId}";
+    private static final String FIND_GADGETS_BY_USER_ROUTE_ENDPOINT = "/gadgetDistributor/findGadgetsByUser/{userId}";
+    private static final String FIND_GADGETS_BY_USER_ENDPOINT = "/gadgetDistributor/findGadgetsByUser/";
     private static final String FIND_ALL_USER_GADGETS = "/gadgetDistributor/findAll";
-    private static final String SAVE_USER_GADGET_ENDPOINT = "/gadgetDistributor/saveUserGadget/user/{userId}/gadget/{gadgetId}";
+    private static final String SAVE_USER_GADGET_ROUTE_ENDPOINT = "/gadgetDistributor/saveUserGadgets/user/{userId}/gadget/{gadgetId}";
     private static final String SAVE_USER_GADGET = "/gadgetDistributor/saveUserGadgets/";
     private static final String DELETE_USER_GADGETS_BY_USER_ROUTE_ENDPOINT = "/gadgetDistributor/deleteUserGadgetsByUser/{userId}";
     private static final String DELETE_USER_GADGETS_BY_USER_ENDPOINT = "/gadgetDistributor/deleteUserGadgetsByUser/";
@@ -66,10 +67,10 @@ public class GadgetDistributorHandlerTest {
         GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(userGadgets);
         GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(webClientBuilder, gadgetDistributorRepositoryMock);
 
-        webTestClient = WebTestClient.bindToRouterFunction(route(GET(FIND_GADGETS_BY_USER_ENDPOINT)
+        webTestClient = WebTestClient.bindToRouterFunction(route(GET(FIND_GADGETS_BY_USER_ROUTE_ENDPOINT)
                 .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetDistributorHandler::findGadgetsByUser)).build();
 
-        webTestClient.get().uri(FIND_GADGETS_BY_USER_ENDPOINT, UserGadgetsMock.createMock().getUser().getId())
+        webTestClient.get().uri(FIND_GADGETS_BY_USER_ENDPOINT + UserGadgetsMock.createMock().getUser().getId())
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus().isOk()
@@ -82,11 +83,11 @@ public class GadgetDistributorHandlerTest {
         GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(userGadgets);
         GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(webClientBuilder, gadgetDistributorRepositoryMock);
 
-        webTestClient = WebTestClient.bindToRouterFunction(route(GET(FIND_GADGETS_BY_USER_ENDPOINT)
+        webTestClient = WebTestClient.bindToRouterFunction(route(GET(FIND_GADGETS_BY_USER_ROUTE_ENDPOINT)
                 .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetDistributorHandler::findGadgetsByUser)).build();
 
 
-        webTestClient.get().uri(FIND_GADGETS_BY_USER_ENDPOINT, USER_ID_NOT_EXIST)
+        webTestClient.get().uri(FIND_GADGETS_BY_USER_ROUTE_ENDPOINT, USER_ID_NOT_EXIST)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .exchange()
                 .expectStatus().isOk()
@@ -100,7 +101,7 @@ public class GadgetDistributorHandlerTest {
         GadgetDistributorRepositoryMock gadgetDistributorRepositoryMock = new GadgetDistributorRepositoryMock(Collections.singletonList(userGadget));
         GadgetDistributorHandler gadgetDistributorHandler = new GadgetDistributorHandler(webClientBuilder, gadgetDistributorRepositoryMock);
 
-        webTestClient = WebTestClient.bindToRouterFunction(route(POST(SAVE_USER_GADGET_ENDPOINT)
+        webTestClient = WebTestClient.bindToRouterFunction(route(POST(SAVE_USER_GADGET_ROUTE_ENDPOINT)
                 .and(accept(MediaType.APPLICATION_JSON_UTF8)), gadgetDistributorHandler::saveUserGadget)).build();
 
         webTestClient.post().uri(SAVE_USER_GADGET + USER + userGadget.getUser().getId() + GADGET + userGadget.getGadgets().iterator().next().getId())

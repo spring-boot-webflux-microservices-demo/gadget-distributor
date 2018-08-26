@@ -1,0 +1,107 @@
+{
+	"info": {
+		"_postman_id": "e0aebd16-7526-496e-a5b1-03e268cc11b2",
+		"name": "gadgetDistributor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8083/gadgetDistributor/saveUserGadgets/user/5b82b82b80467978d431a0f0/gadget/5b82b831804679838458eda2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8083/gadgetDistributor/saveUserGadgets/user/5b82b82b80467978d431a0f0/gadget/5b82b831804679838458eda2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"gadgetDistributor",
+						"saveUserGadgets",
+						"user",
+						"5b82b82b80467978d431a0f0",
+						"gadget",
+						"5b82b831804679838458eda2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8083/gadgetDistributor/findAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8083/gadgetDistributor/findAll",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"gadgetDistributor",
+						"findAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8083/gadgetDistributor/findGadgetsByUser/5b82b82b80467978d431a0f0",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8083/gadgetDistributor/findGadgetsByUser/5b82b82b80467978d431a0f0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"gadgetDistributor",
+						"findGadgetsByUser",
+						"5b82b82b80467978d431a0f0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8083/gadgetDistributor/deleteUserGadgetsByUser/5b82b82b80467978d431a0f0",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8083/gadgetDistributor/deleteUserGadgetsByUser/5b82b82b80467978d431a0f0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"gadgetDistributor",
+						"deleteUserGadgetsByUser",
+						"5b82b82b80467978d431a0f0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

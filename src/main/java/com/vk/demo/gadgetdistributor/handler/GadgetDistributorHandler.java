@@ -62,7 +62,9 @@ public class GadgetDistributorHandler {
                         .bodyToMono(Gadget.class);
         Mono<UserGadgets> userGadgets = Mono.zip(user, gadget, UserGadgets::new);
         Mono<UserGadgets> saved = userGadgets.flatMap(gadgetDistributorRepository::save);
-        return saved.flatMap(ug -> ServerResponse.created(URI.create("/gadgetDistribution/save/" + ug.getId())).body(Mono.just(ug), UserGadgets.class));
+        return saved.flatMap(ug -> ServerResponse.created(URI.create("/gadgetDistribution/save/" + ug.getId()))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(ug), UserGadgets.class));
     }
 
     @NonNull
